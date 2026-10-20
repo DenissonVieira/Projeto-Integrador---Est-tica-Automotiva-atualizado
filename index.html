@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reluz Auto Estética — Agende seu horário</title>
+<meta name="description" content="Lavagem, polimento, vitrificação e higienização automotiva. Veja os horários disponíveis e agende em poucos cliques.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #101215;
+    --bg-alt: #16181c;
+    --card: #1c1f24;
+    --card-hover: #23262c;
+    --line: #2b2f35;
+    --text: #edeeea;
+    --text-dim: #9aa1a8;
+    --text-faint: #676e75;
+    --accent: #e8a23a;
+    --accent-dim: #b87f2a;
+    --accent-ink: #241a08;
+    --ok: #4caf7d;
+    --off: #55595f;
+    --danger: #d9765a;
+    --radius: 4px;
+    --container: 1120px;
+    --shadow: 0 20px 40px -20px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Work Sans', -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.wordmark{
+    font-family:'Big Shoulders Display', 'Work Sans', sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    line-height:.95;
+    margin:0;
+  }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  button{font-family:inherit;}
+  .container{max-width:var(--container); margin:0 auto; padding:0 24px;}
+  section{padding:88px 0;}
+  .eyebrow{
+    color:var(--accent);
+    font-size:.8rem;
+    font-weight:600;
+    letter-spacing:.06em;
+  }
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(1.9rem, 3.6vw, 2.8rem); margin-top:10px;}
+  .section-head p{color:var(--text-dim); margin-top:14px; max-width:52ch;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:var(--radius);
+    font-weight:600;
+    font-size:.95rem;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--accent); color:var(--accent-ink);}
+  .btn-primary:hover{background:#f0ae4d;}
+  .btn-ghost{background:transparent; color:var(--text); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--text-dim);}
+  .btn-block{width:100%; justify-content:center;}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(16,18,21,.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .wordmark{font-size:1.5rem; letter-spacing:.02em;}
+  .wordmark span{color:var(--accent);}
+  .nav-links{display:flex; align-items:center; gap:32px; list-style:none; margin:0; padding:0;}
+  .nav-links a{
+    font-size:.92rem; font-weight:600; color:var(--text-dim);
+    text-decoration:none; transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex; align-items:center; gap:18px;}
+  .nav-toggle{
+    display:none; background:none; border:1px solid var(--line); color:var(--text);
+    width:42px; height:42px; border-radius:var(--radius); cursor:pointer;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:76px 0 96px;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;
+  }
+  .hero h1{font-size:clamp(2.4rem, 5vw, 4rem); max-width:14ch;}
+  .hero .lede{color:var(--text-dim); max-width:46ch; margin:24px 0 34px; font-size:1.05rem;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+  .hero-stats{display:flex; gap:34px; margin-top:52px; flex-wrap:wrap;}
+  .hero-stats div strong{
+    display:block; font-family:'Big Shoulders Display',sans-serif; font-size:2rem; color:var(--accent);
+  }
+  .hero-stats div span{font-size:.82rem; color:var(--text-faint);}
+
+  .disc-wrap{position:relative; display:flex; align-items:center; justify-content:center;}
+  .disc-glow{
+    position:absolute; width:340px; height:340px; border-radius:50%;
+    background:radial-gradient(circle, rgba(232,162,58,.25), transparent 70%);
+    filter:blur(10px);
+  }
+  .disc{width:min(380px, 80vw); animation:spin 26s linear infinite;}
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+
+  /* ---------- About ---------- */
+  .about{background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:64px; align-items:start;}
+  .about-grid h2{font-size:clamp(1.8rem,3.4vw,2.6rem); max-width:12ch;}
+  .about-list{list-style:none; margin:0; padding:0; display:grid; gap:26px;}
+  .about-list li{display:grid; grid-template-columns:auto 1fr; gap:16px; border-top:1px solid var(--line); padding-top:20px;}
+  .about-list li:first-child{border-top:none; padding-top:0;}
+  .about-list b{display:block; font-size:1.02rem; margin-bottom:4px;}
+  .about-list p{margin:0; color:var(--text-dim); font-size:.94rem;}
+  .step-num{
+    font-family:'Big Shoulders Display',sans-serif; font-size:1.6rem; color:var(--accent-dim); width:34px;
+  }
+
+  /* ---------- Services ---------- */
+  .services-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
+  .service-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px; display:flex; flex-direction:column; gap:16px; transition:background .2s ease, border-color .2s ease;
+  }
+  .service-card:hover{background:var(--card-hover); border-color:#3a3f46;}
+  .service-icon{width:38px; height:38px; color:var(--accent);}
+  .service-card h3{font-size:1.15rem; text-transform:none; letter-spacing:0; font-family:'Work Sans',sans-serif; font-weight:700;}
+  .service-card p{color:var(--text-dim); font-size:.92rem; margin:0; flex:1;}
+  .service-meta{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:.82rem; color:var(--text-faint); border-top:1px solid var(--line); padding-top:14px;
+  }
+  .service-meta strong{color:var(--accent); font-weight:600;}
+
+  /* ---------- Booking (weekly timeline grid) ---------- */
+  .booking{background:var(--bg-alt); border-top:1px solid var(--line);}
+  .booking-panel{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px; box-shadow:var(--shadow);
+  }
+  .booking-legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:22px; font-size:.82rem; color:var(--text-dim);}
+  .booking-legend span{display:inline-flex; align-items:center; gap:8px;}
+  .dot{width:10px; height:10px; border-radius:2px; display:inline-block;}
+  .dot-open{background:transparent; border:1.5px dashed var(--accent);}
+
+  .week-nav{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line);
+  }
+  .week-nav h3{font-family:'Work Sans',sans-serif; text-transform:none; letter-spacing:0; font-weight:700; font-size:1.05rem;}
+  .week-nav-btns{display:flex; gap:8px;}
+  .week-btn{
+    width:38px; height:38px; border-radius:var(--radius); border:1px solid var(--line);
+    background:transparent; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .week-btn:hover:not(:disabled){border-color:var(--text-dim);}
+  .week-btn:disabled{opacity:.3; cursor:not-allowed;}
+
+  .schedule-scroll{overflow-x:auto; padding-bottom:6px;}
+  .schedule{display:grid; grid-template-columns:56px repeat(var(--cols, 6), minmax(120px, 1fr)); min-width:760px;}
+
+  .schedule-time-col{display:flex; flex-direction:column;}
+  .schedule-time-col .schedule-col-head{height:52px;}
+  .schedule-time-col .tick{
+    position:relative; font-size:.72rem; color:var(--text-faint); text-align:right; padding-right:10px;
+  }
+  .schedule-time-col .tick span{position:relative; top:-7px;}
+
+  .schedule-col-head{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    border-bottom:1px solid var(--line); padding:6px 4px;
+  }
+  .schedule-col-head strong{font-size:.78rem; letter-spacing:.04em; color:var(--text-dim); font-weight:700; text-transform:uppercase;}
+  .schedule-col-head span{font-family:'Big Shoulders Display',sans-serif; font-size:1.15rem; margin-top:2px;}
+  .schedule-col-head.is-today span{color:var(--accent);}
+
+  .schedule-day{
+    position:relative; border-left:1px solid var(--line);
+    background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 63px, var(--line) 63px, var(--line) 64px);
+  }
+  .schedule-day.closed{
+    display:flex; align-items:center; justify-content:center; color:var(--text-faint); font-size:.82rem;
+    background-image:none;
+  }
+
+  .schedule-block{
+    position:absolute; left:4px; right:4px; border-radius:3px; padding:8px 10px;
+    overflow:hidden; cursor:pointer; text-align:left; border:none; font-family:inherit;
+    transition:filter .15s ease, transform .1s ease;
+  }
+  .schedule-block:hover{filter:brightness(1.12);}
+  .schedule-block:active{transform:scale(.99);}
+  .schedule-block .b-time{display:block; font-size:.72rem; opacity:.85; margin-bottom:2px;}
+  .schedule-block .b-name{display:block; font-size:.86rem; font-weight:700; line-height:1.2;}
+
+  .schedule-block.is-open{
+    background:rgba(232,162,58,.1); border:1.5px dashed var(--accent); color:var(--accent);
+  }
+  .schedule-block.is-booked{color:#fff;}
+  .schedule-block.is-requested{
+    background:var(--accent) !important; border:none; color:var(--accent-ink) !important;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(8,9,10,.7);
+    display:none; align-items:center; justify-content:center; padding:20px; z-index:100;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    width:100%; max-width:460px; background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden; max-height:90vh; display:flex; flex-direction:column;
+    box-shadow:var(--shadow); animation:modal-in .18s ease;
+  }
+  @keyframes modal-in{ from{opacity:0; transform:scale(.97);} to{opacity:1; transform:scale(1);} }
+  .modal-band{padding:20px 30px; color:#fff; flex:0 0 auto;}
+  .modal-band .b-time{display:block; font-size:.82rem; opacity:.85; margin-bottom:4px;}
+  .modal-band h3{font-family:'Work Sans',sans-serif; text-transform:none; letter-spacing:0; font-size:1.25rem; font-weight:700;}
+  .modal-body{padding:26px 30px 30px; overflow-y:auto;}
+  .modal-head{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;}
+  .modal-close{background:none; border:none; color:inherit; opacity:.8; font-size:1.4rem; cursor:pointer; line-height:1;}
+  .modal-close:hover{opacity:1;}
+  .modal-note{color:var(--text-dim); font-size:.92rem; margin:0 0 20px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:.82rem; color:var(--text-dim); margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius);
+    color:var(--text); padding:11px 12px; font-size:.95rem; font-family:inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .field textarea{resize:vertical; min-height:64px;}
+  .modal-actions{display:flex; gap:10px; margin-top:22px;}
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed; left:50%; bottom:28px; transform:translate(-50%, 20px);
+    background:var(--accent); color:var(--accent-ink); padding:14px 22px; border-radius:var(--radius);
+    font-weight:600; font-size:.92rem; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+    z-index:150; max-width:90vw;
+  }
+  .toast.show{opacity:1; transform:translate(-50%, 0);}
+
+  /* ---------- Footer ---------- */
+  footer{padding:64px 0 40px;}
+  .footer-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; border-bottom:1px solid var(--line); padding-bottom:40px; margin-bottom:24px;}
+  footer h4{font-family:'Work Sans',sans-serif; text-transform:none; font-size:.95rem; font-weight:700; letter-spacing:0; margin-bottom:14px;}
+  footer p, footer a{color:var(--text-dim); font-size:.92rem; text-decoration:none;}
+  footer address{font-style:normal;}
+  .foot-bottom{display:flex; justify-content:space-between; color:var(--text-faint); font-size:.82rem; flex-wrap:wrap; gap:8px;}
+
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr; gap:40px;}
+    .disc-wrap{order:-1;}
+    .disc{width:220px;}
+    .about-grid{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:720px){
+    section{padding:64px 0;}
+    .nav-links{
+      position:absolute; top:76px; left:0; right:0; background:var(--bg);
+      flex-direction:column; align-items:flex-start; gap:0; border-bottom:1px solid var(--line);
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links li{width:100%;}
+    .nav-links a{display:block; padding:16px 24px; width:100%; border-top:1px solid var(--line);}
+    .nav-toggle{display:block;}
+    .nav-cta .btn-ghost{display:none;}
+    .services-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero-stats{gap:24px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .disc{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#topo" class="wordmark">RELUZ<span>.</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#agendamento">Agendamento</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://wa.me/5579990000000" target="_blank" rel="noopener">(79) 99000-0000</a>
+      <a class="btn btn-primary" href="#agendamento">Agendar horário</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="topo">
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div>
+      <p class="eyebrow">ESTÉTICA AUTOMOTIVA · ARACAJU/SE</p>
+      <h1>Estética automotiva com processo, não com pressa.</h1>
+      <p class="lede">Lavagem, polimento e vitrificação executados em etapas registradas, para você acompanhar exatamente o que foi feito no seu carro — e escolher o horário de entrada direto na agenda abaixo.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#agendamento">Ver horários disponíveis</a>
+        <a class="btn btn-ghost" href="#servicos">Conhecer os serviços</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>9 anos</strong><span>de oficina em funcionamento</span></div>
+        <div><strong>3.200+</strong><span>veículos já atendidos</span></div>
+        <div><strong>4,9/5</strong><span>média de avaliação dos clientes</span></div>
+      </div>
+    </div>
+    <div class="disc-wrap">
+      <div class="disc-glow"></div>
+      <svg class="disc" viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="180" stroke="#2b2f35" stroke-width="2"/>
+        <circle cx="200" cy="200" r="150" stroke="#2b2f35" stroke-width="1"/>
+        <circle cx="200" cy="200" r="120" stroke="#2b2f35" stroke-width="1"/>
+        <g stroke="#e8a23a" stroke-width="2" stroke-linecap="round" opacity="0.85">
+          <path d="M200 40 A160 160 0 0 1 340 120" />
+          <path d="M360 200 A160 160 0 0 1 305 335" />
+          <path d="M200 360 A160 160 0 0 1 62 288" />
+          <path d="M40 190 A160 160 0 0 1 90 68" />
+        </g>
+        <circle cx="200" cy="200" r="34" fill="#1c1f24" stroke="#e8a23a" stroke-width="2"/>
+        <circle cx="200" cy="200" r="6" fill="#e8a23a"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="about" id="sobre">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">COMO TRABALHAMOS</p>
+        <h2>Cada etapa é vistoriada antes de passar para a próxima.</h2>
+      </div>
+      <ul class="about-list">
+        <li>
+          <span class="step-num">01</span>
+          <div>
+            <b>Vistoria de entrada</b>
+            <p>Fotografamos riscos, amassados e desgastes existentes antes de começar, para alinhar expectativas com você.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <div>
+            <b>Produtos por tipo de pintura</b>
+            <p>Shampoos neutros, polidores e ceras são escolhidos conforme a idade e o estado da pintura do seu veículo.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <div>
+            <b>Conferência final com o cliente</b>
+            <p>Antes da entrega, percorremos o carro com você para mostrar o resultado sob luz direta.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">SERVIÇOS</p>
+        <h2>Do básico ao acabamento de vitrine</h2>
+        <p>Todos os serviços incluem vistoria de entrada. Os valores abaixo são a partir de, e podem variar conforme porte e estado do veículo.</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 16a5 5 0 0 1 10 0"/><path d="M12 3c2 3 4 5 4 8a4 4 0 1 1-8 0c0-3 2-5 4-8Z"/></svg>
+          <h3>Lavagem Detalhada</h3>
+          <p>Lavagem completa com produtos neutros, secagem em toalhas de microfibra e limpeza de vãos e rodas.</p>
+          <div class="service-meta"><span>1h</span><strong>a partir de R$ 80</strong></div>
+        </div>
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="7" width="16" height="12" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M4 12h16"/></svg>
+          <h3>Higienização Interna</h3>
+          <p>Aspiração profunda, limpeza de bancos, painel e forração, com tratamento contra odores.</p>
+          <div class="service-meta"><span>2h</span><strong>a partir de R$ 150</strong></div>
+        </div>
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.4"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg>
+          <h3>Polimento Técnico</h3>
+          <p>Correção de riscos finos e marcas de holograma, devolvendo profundidade e brilho à pintura.</p>
+          <div class="service-meta"><span>4h</span><strong>a partir de R$ 350</strong></div>
+        </div>
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 4 6v6c0 5 3.4 7.8 8 9 4.6-1.2 8-4 8-9V6l-8-3Z"/></svg>
+          <h3>Vitrificação de Pintura</h3>
+          <p>Camada de proteção cerâmica que mantém o brilho e facilita a limpeza por até 12 meses.</p>
+          <div class="service-meta"><span>1 dia</span><strong>a partir de R$ 900</strong></div>
+        </div>
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20c3-6 5-12 8-16 3 4 5 10 8 16"/><path d="M6 16h12"/></svg>
+          <h3>Enceramento de Proteção</h3>
+          <p>Cera de carnaúba aplicada à mão para reforçar o brilho e proteger contra sol e chuva.</p>
+          <div class="service-meta"><span>1h30</span><strong>a partir de R$ 120</strong></div>
+        </div>
+
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="12" rx="1"/><path d="M3 17h18M9 21h6"/></svg>
+          <h3>Descontaminação e Vidros</h3>
+          <p>Remoção de resíduos ferrosos e piche da lataria, com selante que repele água no para-brisa.</p>
+          <div class="service-meta"><span>1h</span><strong>a partir de R$ 100</strong></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDAMENTO -->
+  <section class="booking" id="agendamento">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">AGENDAMENTO</p>
+        <h2>Escolha um dia e horário</h2>
+        <p>Selecione o dia, clique em um horário disponível e preencha seus dados. O pedido é enviado direto para o nosso WhatsApp, onde confirmamos em poucos minutos.</p>
+      </div>
+
+      <div class="booking-panel">
+        <div class="booking-legend" id="bookingLegend">
+          <span><i class="dot dot-open"></i> Disponível — clique para agendar</span>
+        </div>
+
+        <div class="week-nav">
+          <h3 id="weekLabel">Semana de …</h3>
+          <div class="week-nav-btns">
+            <button class="week-btn" id="prevWeek" aria-label="Semana anterior">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button class="week-btn" id="nextWeek" aria-label="Próxima semana">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="schedule-scroll">
+          <div class="schedule" id="schedule"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contato">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#topo" class="wordmark" style="font-size:1.3rem;">RELUZ<span>.</span></a>
+        <p style="margin-top:14px; max-width:32ch;">Estética automotiva em Aracaju/SE. Lavagem, polimento, vitrificação e higienização com processo documentado.</p>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <p><a href="https://wa.me/5579990000000" target="_blank" rel="noopener">WhatsApp (79) 99000-0000</a></p>
+        <p><a href="mailto:contato@reluzestetica.com.br">contato@reluzestetica.com.br</a></p>
+        <p><a href="https://instagram.com" target="_blank" rel="noopener">@reluzestetica</a></p>
+      </div>
+      <div>
+        <h4>Endereço</h4>
+        <address>
+          <p>Rua Exemplo, 456 – Centro<br>Aracaju/SE</p>
+          <p>Seg–Sex 08h–18h<br>Sáb 08h–13h</p>
+        </address>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> Reluz Auto Estética</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal de agendamento / detalhes do horário -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-band" id="modalBand">
+      <div class="modal-head">
+        <div>
+          <span class="b-time" id="modalTime"></span>
+          <h3 id="modalTitle">Horário</h3>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Fechar">&times;</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <!-- Conteúdo exibido quando o horário já está ocupado -->
+      <div id="modalOccupied" style="display:none;">
+        <p class="modal-note">Esse horário já está reservado. Escolha outro horário em destaque na agenda (contorno tracejado) para solicitar seu agendamento.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary btn-block" id="modalOccupiedClose">Entendi</button>
+        </div>
+      </div>
+
+      <!-- Formulário exibido quando o horário está disponível -->
+      <form id="bookingForm" style="display:none;">
+        <p class="modal-note" id="modalAvailableNote"></p>
+        <div class="field">
+          <label for="fName">Nome completo</label>
+          <input id="fName" name="nome" type="text" required placeholder="Seu nome">
+        </div>
+        <div class="field">
+          <label for="fPhone">WhatsApp</label>
+          <input id="fPhone" name="telefone" type="tel" required placeholder="(79) 99999-9999">
+        </div>
+        <div class="field">
+          <label for="fService">Serviço desejado</label>
+          <select id="fService" name="servico" required></select>
+        </div>
+        <div class="field">
+          <label for="fTime">Horário de entrada</label>
+          <select id="fTime" name="horario" required></select>
+        </div>
+        <div class="field">
+          <label for="fVehicle">Veículo (Obrigatório)</label>
+          <input id="fVehicle" name="veiculo" type="text" required placeholder="Ex.: Onix Prata 2020">
+        </div>
+        <div class="field">
+          <label for="fNotes">Observações (opcional)</label>
+          <textarea id="fNotes" name="observacoes" placeholder="Algo que devemos saber antes?"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="modalCancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-block">Confirmar via WhatsApp</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- Config ----------------------------------------------------------
+  var WHATSAPP_NUMBER = "5579990000000"; // TODO: substitua pelo número real do WhatsApp
+  var SERVICES = [
+    "Lavagem Detalhada",
+    "Higienização Interna",
+    "Polimento Técnico",
+    "Vitrificação de Pintura",
+    "Enceramento de Proteção",
+    "Descontaminação e Vidros"
+  ];
+  // tipos usados para gerar os horários já ocupados na agenda (demonstração)
+  var APPOINTMENT_TYPES = [
+    { name: "Lavagem Detalhada",      duration: 1, color: "#3f7a86" },
+    { name: "Higienização Interna",   duration: 2, color: "#6f5fa0" },
+    { name: "Enceramento de Proteção",duration: 2, color: "#b56a3c" },
+    { name: "Polimento Técnico",      duration: 4, color: "#6f7a3f" }
+  ];
+  var WEEKDAY_SHORT = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+  var WEEKDAY_FULL  = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+  var MONTH_SHORT   = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  var ROW_PX = 64;      // altura de 1 hora na grade
+  var DAY_START = 8;    // 08:00
+  var DAY_END = 18;     // 18:00 (sábado fecha às 13:00)
+  var MAX_WEEKS_AHEAD = 3;
+
+  // ---- Populate service select (formulário) -----------------------------
+  var serviceSelect = document.getElementById("fService");
+  SERVICES.forEach(function(s){
+    var opt = document.createElement("option");
+    opt.value = s; opt.textContent = s;
+    serviceSelect.appendChild(opt);
+  });
+
+  // ---- Legend -------------------------------------------------------------
+  var legendEl = document.getElementById("bookingLegend");
+  APPOINTMENT_TYPES.forEach(function(t){
+    var span = document.createElement("span");
+    span.innerHTML = '<i class="dot" style="background:' + t.color + '"></i> ' + t.name + " (ocupado)";
+    legendEl.appendChild(span);
+  });
+
+  // ---- Date helpers ---------------------------------------------------------
+  function dateKey(d){
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function pseudoRandom(str){
+    var h = 0;
+    for(var i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+    return (h % 1000) / 1000;
+  }
+  function getMonday(base){
+    var d = new Date(base);
+    var day = d.getDay();
+    var diff = (day === 0) ? -6 : (1 - day);
+    d.setDate(d.getDate() + diff);
+    d.setHours(0,0,0,0);
+    return d;
+  }
+  function fmtTime(h){ return String(h).padStart(2,"0") + ":00"; }
+  function fmtDateShort(d){ return d.getDate() + " de " + MONTH_SHORT[d.getMonth()]; }
+
+  // ---- Build a single day's blocks (booked / available / requested / past) --
+  var requestedByUser = {}; // "dateKey-hour" -> true, this session's own requests
+
+  function buildDayBlocks(date){
+    var dow = date.getDay();
+    if(dow === 0) return { closed:true, blocks:[] };
+
+    var startHour = DAY_START;
+    var endHour = (dow === 6) ? 13 : DAY_END;
+    var key = dateKey(date);
+
+    // occupancy map for this day (hour -> true if taken by an appointment)
+    var occupied = {};
+    var booked = [];
+    var attempts = 0;
+    var count = 1 + Math.floor(pseudoRandom(key + "n") * 3); // 1 a 3 compromissos
+    for(var i=0; i<count && attempts < 20; i++){
+      attempts++;
+      var type = APPOINTMENT_TYPES[Math.floor(pseudoRandom(key+i+"t") * APPOINTMENT_TYPES.length)];
+      var span = Math.min(type.duration, endHour - startHour);
+      var maxStart = endHour - span;
+      if(maxStart < startHour){ continue; }
+      var start = startHour + Math.floor(pseudoRandom(key+i+"s") * (maxStart - startHour + 1));
+      var overlap = false;
+      for(var h = start; h < start + span; h++){ if(occupied[h]){ overlap = true; break; } }
+      if(overlap){ i--; continue; } // tenta outro horário no lugar deste
+      for(var h2 = start; h2 < start + span; h2++){ occupied[h2] = true; }
+      booked.push({ type:"booked", start:start, end:start+span, service:type.name, color:type.color });
+    }
+
+    // clip out the past, if this is today
+    var now = new Date();
+    var isToday = date.toDateString() === now.toDateString();
+    var pastEnd = startHour;
+    if(isToday){
+      pastEnd = Math.min(now.getHours() + (now.getMinutes() > 0 ? 1 : 0), endHour);
+      for(var h3 = startHour; h3 < pastEnd; h3++){ occupied[h3] = "past"; }
+    }
+
+    // build available / requested blocks from the remaining hours
+    var blocks = booked.filter(function(b){ return b.end > pastEnd; }).map(function(b){
+      if(b.start < pastEnd) b.start = pastEnd;
+      return b;
+    });
+
+    if(pastEnd > startHour){
+      blocks.push({ type:"past", start:startHour, end:pastEnd });
+    }
+
+    var cursor = pastEnd;
+    while(cursor < endHour){
+      if(occupied[cursor] === true){ cursor++; continue; }
+      var reqId = key + "-" + cursor;
+      if(requestedByUser[reqId]){
+        blocks.push({ type:"requested", start:cursor, end:cursor+1, hour:cursor });
+        cursor++;
+        continue;
+      }
+      var freeStart = cursor;
+      while(cursor < endHour && occupied[cursor] !== true && !requestedByUser[key+"-"+cursor]){ cursor++; }
+      blocks.push({ type:"available", start:freeStart, end:cursor });
+    }
+
+    if(endHour < DAY_END){
+      blocks.push({ type:"past", start:endHour, end:DAY_END, label:"Fechado" });
+    }
+
+    return { closed:false, blocks:blocks, startHour: startHour, endHour: endHour };
+  }
+
+  // ---- Week state -----------------------------------------------------------
+  var weekOffset = 0;
+
+  function getWeekDays(){
+    var monday = getMonday(new Date());
+    monday.setDate(monday.getDate() + weekOffset*7);
+    var arr = [];
+    for(var i=0;i<6;i++){ // segunda a sábado
+      var d = new Date(monday);
+      d.setDate(d.getDate()+i);
+      arr.push(d);
+    }
+    return arr;
+  }
+
+  // ---- Render the schedule ----------------------------------------------------
+  var scheduleEl = document.getElementById("schedule");
+  var weekLabelEl = document.getElementById("weekLabel");
+  var prevBtn = document.getElementById("prevWeek");
+  var nextBtn = document.getElementById("nextWeek");
+
+  function renderSchedule(){
+    var week = getWeekDays();
+    weekLabelEl.textContent = "Semana de " + fmtDateShort(week[0]) + " a " + fmtDateShort(week[5]);
+    prevBtn.disabled = weekOffset <= 0;
+    nextBtn.disabled = weekOffset >= MAX_WEEKS_AHEAD;
+
+    scheduleEl.innerHTML = "";
+    scheduleEl.style.setProperty("--cols", 6);
+
+    // time axis column
+    var timeCol = document.createElement("div");
+    timeCol.className = "schedule-time-col";
+    var timeHead = document.createElement("div");
+    timeHead.className = "schedule-col-head";
+    timeCol.appendChild(timeHead);
+    var timeInner = document.createElement("div");
+    timeInner.style.position = "relative";
+    timeInner.style.height = ((DAY_END-DAY_START)*ROW_PX) + "px";
+    for(var h = DAY_START; h <= DAY_END; h++){
+      var tick = document.createElement("div");
+      tick.className = "tick";
+      tick.style.position = "absolute";
+      tick.style.top = ((h-DAY_START)*ROW_PX - 7) + "px";
+      tick.style.right = "0"; tick.style.left = "0";
+      tick.innerHTML = "<span>" + fmtTime(h) + "</span>";
+      timeInner.appendChild(tick);
+    }
+    timeCol.appendChild(timeInner);
+    scheduleEl.appendChild(timeCol);
+
+    // day columns
+    var today = new Date();
+    week.forEach(function(date){
+      var head = document.createElement("div");
+      head.className = "schedule-col-head" + (date.toDateString() === today.toDateString() ? " is-today" : "");
+      head.innerHTML = "<strong>" + WEEKDAY_SHORT[date.getDay()] + "</strong><span>" + date.getDate() + "/" + (date.getMonth()+1) + "</span>";
+
+      var col = document.createElement("div");
+      col.className = "schedule-day";
+      col.style.height = ((DAY_END-DAY_START)*ROW_PX) + "px";
+
+      var wrap = document.createElement("div");
+      wrap.appendChild(head);
+      wrap.appendChild(col);
+
+      var dayData = buildDayBlocks(date);
+      var key = dateKey(date);
+
+      dayData.blocks.forEach(function(b){
+        var top = (b.start - DAY_START) * ROW_PX;
+        var height = (b.end - b.start) * ROW_PX;
+        if(height <= 0) return;
+        var el = document.createElement("button");
+        el.type = "button";
+        el.className = "schedule-block";
+        el.style.top = (top+2) + "px";
+        el.style.height = (height-4) + "px";
+
+        if(b.type === "booked"){
+          el.classList.add("is-booked");
+          el.style.background = b.color;
+          el.innerHTML = "<span class='b-time'>" + fmtTime(b.start) + " – " + fmtTime(b.end) + "</span><span class='b-name'>" + b.service + "</span>";
+          el.addEventListener("click", function(){ openOccupiedModal(b); });
+        } else if(b.type === "requested"){
+          el.classList.add("is-requested");
+          el.disabled = true;
+          el.innerHTML = "<span class='b-time'>" + fmtTime(b.start) + " – " + fmtTime(b.end) + "</span><span class='b-name'>Solicitado ✓</span>";
+        } else if(b.type === "available"){
+          el.classList.add("is-open");
+          el.innerHTML = "<span class='b-time'>" + fmtTime(b.start) + " – " + fmtTime(b.end) + "</span><span class='b-name'>Disponível</span>";
+          el.addEventListener("click", function(){ openBookingModal(date, b); });
+        } else { // past / fechado
+          el.disabled = true;
+          el.style.background = "transparent";
+          el.style.border = "1px dashed var(--line)";
+          el.style.color = "var(--text-faint)";
+          el.style.cursor = "default";
+          el.innerHTML = "<span class='b-name'>" + (b.label || "Encerrado") + "</span>";
+        }
+        col.appendChild(el);
+      });
+
+      if(dayData.closed){
+        col.classList.add("closed");
+        col.textContent = "Fechado";
+      }
+
+      scheduleEl.appendChild(wrap);
+    });
+  }
+
+  prevBtn.addEventListener("click", function(){ if(weekOffset>0){ weekOffset--; renderSchedule(); } });
+  nextBtn.addEventListener("click", function(){ if(weekOffset<MAX_WEEKS_AHEAD){ weekOffset++; renderSchedule(); } });
+
+  // ---- Modal ------------------------------------------------------------
+  var overlay = document.getElementById("modalOverlay");
+  var modalBand = document.getElementById("modalBand");
+  var modalTitle = document.getElementById("modalTitle");
+  var modalTime = document.getElementById("modalTime");
+  var modalOccupied = document.getElementById("modalOccupied");
+  var bookingForm = document.getElementById("bookingForm");
+  var modalAvailableNote = document.getElementById("modalAvailableNote");
+  var fTime = document.getElementById("fTime");
+  var selection = null;
+
+  function openModalBase(color, title, time){
+    modalBand.style.background = color;
+    modalTitle.textContent = title;
+    modalTime.textContent = time;
+    overlay.classList.add("open");
+  }
+
+  function openOccupiedModal(block){
+    selection = null;
+    modalOccupied.style.display = "block";
+    bookingForm.style.display = "none";
+    openModalBase(block.color, block.service, fmtTime(block.start) + " – " + fmtTime(block.end));
+  }
+
+  function openBookingModal(date, block){
+    selection = { date: date, block: block };
+    modalOccupied.style.display = "none";
+    bookingForm.style.display = "block";
+
+    fTime.innerHTML = "";
+    for(var h = block.start; h < block.end; h++){
+      var opt = document.createElement("option");
+      opt.value = h; opt.textContent = fmtTime(h);
+      fTime.appendChild(opt);
+    }
+    modalAvailableNote.textContent = "Janela livre em " + WEEKDAY_FULL[date.getDay()] + ": escolha o horário de entrada e preencha seus dados.";
+
+    openModalBase("#e8a23a", "Novo agendamento", fmtDateShort(date) + " · " + fmtTime(block.start) + " – " + fmtTime(block.end));
+    modalBand.style.color = "#241a08";
+    document.getElementById("fName").focus();
+  }
+
+  function closeModal(){
+    overlay.classList.remove("open");
+    selection = null;
+    bookingForm.reset();
+    modalBand.style.color = "#fff";
+  }
+
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  document.getElementById("modalCancel").addEventListener("click", closeModal);
+  document.getElementById("modalOccupiedClose").addEventListener("click", closeModal);
+  overlay.addEventListener("click", function(e){ if(e.target === overlay) closeModal(); });
+  window.addEventListener("keyup", function(e){ if(e.key === "Escape" && overlay.classList.contains("open")) closeModal(); });
+
+  bookingForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!selection) return;
+
+    var name = document.getElementById("fName").value.trim();
+    var phone = document.getElementById("fPhone").value.trim();
+    var service = document.getElementById("fService").value;
+    var hour = parseInt(fTime.value, 10);
+    var vehicle = document.getElementById("fVehicle").value.trim();
+    var notes = document.getElementById("fNotes").value.trim();
+    if(!name || !phone){ return; }
+
+    var d = selection.date;
+    var weekday = WEEKDAY_FULL[d.getDay()];
+
+    var lines = [
+      "Olá! Gostaria de agendar um horário na Reluz Auto Estética.",
+      "Data: " + weekday + ", " + fmtDateShort(d),
+      "Horário: " + fmtTime(hour),
+      "Serviço: " + service,
+      "Nome: " + name,
+      "WhatsApp: " + phone
+    ];
+    if(vehicle) lines.push("Veículo: " + vehicle);
+    if(notes) lines.push("Observações: " + notes);
+
+    var message = encodeURIComponent(lines.join("\n"));
+    var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + message;
+
+    requestedByUser[dateKey(d) + "-" + hour] = true;
+    window.open(url, "_blank", "noopener");
+    closeModal();
+    renderSchedule();
+    showToast("Pedido enviado! Finalize a confirmação pelo WhatsApp.");
+  });
+
+  // ---- Toast --------------------------------------------------------------
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 4200);
+  }
+
+  // ---- Mobile nav ------------------------------------------------------
+  var navToggle = document.getElementById("navToggle");
+  var navLinks = document.getElementById("navLinks");
+  navToggle.addEventListener("click", function(){
+    var isOpen = navLinks.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+  navLinks.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ navLinks.classList.remove("open"); });
+  });
+
+  // ---- Init ---------------------------------------------------------------
+  renderSchedule();
+})();
+</script>
+</body>
+</html>
