@@ -1,0 +1,33 @@
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 59a7e83..f8a89d2 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-node_modules/[m
+[31m-*.log [m
+[32m+[m[32m﻿node_modules/[m
+[32m+[m[32mdist/[m
+ .env[m
+[31m-.sqlite[m
+\ No newline at end of file[m
+[32m+[m[32m*.log[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex 0cffde8..0f959e9 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -21,5 +21,13 @@[m
+     "@types/node": "^25.6.0",[m
+     "ts-node": "^10.9.2",[m
+     "typescript": "^6.0.3"[m
+[31m-  }[m
+[32m+[m[32m  },[m
+[32m+[m[32m  "repository": {[m
+[32m+[m[32m    "type": "git",[m
+[32m+[m[32m    "url": "git+https://github.com/ALMEIDASamuelSantana/Clinical-API.git"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  "bugs": {[m
+[32m+[m[32m    "url": "https://github.com/ALMEIDASamuelSantana/Clinical-API/issues"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  "homepage": "https://github.com/ALMEIDASamuelSantana/Clinical-API#readme"[m
+ }[m
